@@ -41,7 +41,7 @@ int main(int a, char const *arguments[]) {
   // return 1;
   // boundary conditions
   u.t[left] = f[]*dirichlet(0.) + (1-f[])*neumann(0.0);
-  f[left] = 0.;
+  f[left] = dirichlet(0.0);
   u.n[right] = neumann(0.);
   p[right] = dirichlet(0.0);
   u.n[top] = neumann(0.);

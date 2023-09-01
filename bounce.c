@@ -32,7 +32,7 @@
 
 // boundary conditions
 u.t[left] = dirichlet(0.0);
-f[left] = 0.;
+f[left] = dirichlet(0.0);
 u.n[right] = neumann(0.);
 p[right] = dirichlet(0.0);
 u.n[top] = neumann(0.);
