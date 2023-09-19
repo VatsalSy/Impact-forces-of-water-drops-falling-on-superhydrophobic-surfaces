@@ -121,7 +121,7 @@ event adapt(i++){
 
 // Outputs
 // static
-event writingFiles (i = 0, t += tsnap; t <= tmax) {
+event writingFiles (t = 0, t += tsnap; t <= tmax) {
   p.nodump = false; // dump pressure to calculate force in post-processing: see getEpsNForce.c
   dump (file = "dump");
   char nameOut[80];
