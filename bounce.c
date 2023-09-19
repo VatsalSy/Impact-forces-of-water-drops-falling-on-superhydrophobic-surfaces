@@ -15,7 +15,7 @@
 #include "navier-stokes/conserving.h"
 #include "tension.h"
 #include "reduced.h"
-#include "adapt_wavelet_limited.h"
+// #include "adapt_wavelet_limited.h"
 
 // Error tolerances
 #define fErr (1e-3)                                 // error tolerance in VOF
@@ -82,13 +82,12 @@ event init(t = 0){
       u.x[] = -1.0*f[];
       u.y[] = 0.0;
     }
-    boundary((scalar *){f, u.x, u.y});
   }
 }
-
+/*
 int refRegion(double x, double y, double z){
   return ((y < 3.0 && x < 0.01) ? MAXlevel+1: y < 4.0 && x < 4.0 ? MAXlevel: y < 6.0 && x < 6.0 ? MAXlevel-1: y < 6.0 && x < 8.0 ? MAXlevel-2: y < 6.0 && x < 12.0 ? MAXlevel-3: MAXlevel-4);
-}
+}*/
 
 event adapt(i++){
   scalar KAPPA[];
@@ -105,10 +104,12 @@ event adapt(i++){
     double D2 = (sq(D11)+sq(D22)+sq(D33)+2.0*sq(D13));
     D2c[] = f[]*D2;
   }
-  boundary((scalar *){D2c, KAPPA, omega});
-  adapt_wavelet_limited ((scalar *){f, KAPPA, u.x, u.y, D2c, omega},
+  adapt_wavelet ((scalar *){f, KAPPA, u.x, u.y, D2c, omega},
      (double[]){fErr, KErr, VelErr, VelErr, DissErr, OmegaErr},
-      refRegion, MINlevel);
+      MAXlevel, MINlevel);
+  // adapt_wavelet_limited ((scalar *){f, KAPPA, u.x, u.y, D2c, omega},
+  //    (double[]){fErr, KErr, VelErr, VelErr, DissErr, OmegaErr},
+  //     refRegion, MINlevel);
   unrefine(x>0.95*Ldomain); // ensure there is no backflow from the outflow walls!
   // foreach(){
   //   omega[] *= f[];
